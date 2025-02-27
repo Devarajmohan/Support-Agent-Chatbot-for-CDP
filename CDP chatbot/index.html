@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDP Support Agent Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            width: 400px;
+            max-width: 100%;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+        .chat-messages {
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .chat-input button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            CDP Support Agent Chatbot
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Ask a question...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput.trim() === '') return;
+
+            const chatMessages = document.getElementById('chat-messages');
+            const userMessage = document.createElement('div');
+            userMessage.textContent = userInput;
+            userMessage.style.textAlign = 'right';
+            userMessage.style.marginBottom = '10px';
+            chatMessages.appendChild(userMessage);
+
+            // Clear the input field
+            document.getElementById('user-input').value = '';
+
+            // Fetch response from the chatbot
+            await getChatbotResponse(userInput);
+        }
+
+        async function getChatbotResponse(userInput) {
+            const chatMessages = document.getElementById('chat-messages');
+            const botMessage = document.createElement('div');
+            botMessage.textContent = 'Typing...';
+            botMessage.style.textAlign = 'left';
+            botMessage.style.marginBottom = '10px';
+            botMessage.style.backgroundColor = '#f1f1f1';
+            botMessage.style.padding = '10px';
+            botMessage.style.borderRadius = '4px';
+            chatMessages.appendChild(botMessage);
+
+            // Scroll to the bottom of the chat
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Predefined responses
+            const responses = {
+                "How do I set up a new source in Segment?": "To set up a new source in Segment, go to the Sources page, click 'Add Source', select the source you want to add, and follow the setup instructions.",
+                "How can I create a user profile in mParticle?": "To create a user profile in mParticle, use the mParticle SDK to log user data, which will automatically create a user profile in the mParticle platform.",
+                "How do I build an audience segment in Lytics?": "To build an audience segment in Lytics, go to the Audiences page, click 'Create New Audience', define your audience criteria, and save the segment.",
+                "How can I integrate my data with Zeotap?": "To integrate your data with Zeotap, use the Zeotap API or SDK to send your data to Zeotap's platform, following their integration guidelines.",
+                "How does Segment's audience creation process compare to Lytics'?": "Segment's audience creation process is more straightforward and user-friendly, while Lytics offers more advanced segmentation capabilities with deeper data insights.",
+                "How do I configure advanced settings in Segment?": "To configure advanced settings in Segment, go to the settings page of the specific source or destination, and you will find options for advanced configurations such as custom mappings and filters."
+            };
+
+            const irrelevantResponse = "Sorry, I can only answer questions related to CDPs (Customer Data Platforms).";
+            const responseText = responses[userInput] || irrelevantResponse;
+
+            // Update bot message
+            botMessage.textContent = responseText;
+
+            // Scroll to the bottom of the chat
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
